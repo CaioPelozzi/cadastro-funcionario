@@ -26,4 +26,15 @@ public class Gerente extends Funcionario{
 		return this.getSalario() + this.getBonus();	
 	}
 	
+	@Override
+	public String toString() {
+		return "Nome: " + this.getNome() +
+				"\nIdade: " + this.getIdade() + 
+				"\nSalario: " + this.getSalario() +
+				"\nData contratação: " + this.getDataContratacao() +
+				"\nTipo do contrato: " + this.getTipoContrato() +
+				"\nBonus: " + this.getBonus() +
+				"\nSalario calculado: " + this.calcularSalario();
+	}
+	
 }

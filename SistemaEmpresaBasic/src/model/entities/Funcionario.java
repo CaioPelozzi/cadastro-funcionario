@@ -5,8 +5,9 @@ import java.time.LocalDate;
 import model.enums.TipoContrato;
 import model.excecoes.DataInvalidaException;
 import model.excecoes.SalarioInvalidoException;
+import model.utils.FuncoesDatas;
 
-public class Funcionario {
+public class Funcionario extends FuncoesDatas{
 
 	private String nome;
 	private int idade;
@@ -18,6 +19,10 @@ public class Funcionario {
 		
 	}
 
+	public Funcionario(Gerente gerente) {
+		
+	}
+	
 	public Funcionario(String nome, int idade, double salario, LocalDate dataContratacao, TipoContrato tipoContrato) {
 		this.nome = nome;
 		this.idade = idade;
@@ -60,14 +65,15 @@ public class Funcionario {
 		return dataContratacao;
 	}
 
-	public void setDataContratacao(LocalDate dataContratacao) throws DataInvalidaException{
-		//tratar a data pelo método depois
+	public void setDataContratacao(String dataContratacao) throws DataInvalidaException{
+		//criar um metodo que formate a data em um pacote utils
+		LocalDate dateFormated = stringToDate(dataContratacao);
 		
-		LocalDate agora = LocalDate.now();
-		if (dataContratacao != agora) {
+		LocalDate now = LocalDate.now();
+		if (!dateFormated.equals(now)) {
 			throw new DataInvalidaException("Data Inválida!"); 
 		} else {
-			this.dataContratacao = dataContratacao;
+			this.dataContratacao = dateFormated;
 		}
 	}
 
@@ -85,8 +91,11 @@ public class Funcionario {
 
 	@Override
 	public String toString() {
-		return "Funcionario [nome=" + nome + ", idade=" + idade + ", salario=" + salario + ", dataContratacao="
-				+ dataContratacao + ", tipoContrato=" + tipoContrato + "]";
+		return "Nome: " + this.getNome() +
+				"\nIdade: " + this.getIdade() + 
+				"\nSalario: " + this.getSalario() +
+				"\nData contratação: " + this.getDataContratacao() +
+				"\nTipo do contrato: " + this.getTipoContrato();
 	}
 	
 	

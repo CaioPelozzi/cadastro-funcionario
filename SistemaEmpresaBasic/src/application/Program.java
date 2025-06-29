@@ -5,51 +5,94 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.entities.Funcionario;
+import model.entities.Gerente;
+import model.enums.TipoContrato;
+import model.excecoes.DataInvalidaException;
 import model.excecoes.SalarioInvalidoException;
+import model.utils.FuncoesDatas;
 
 public class Program {
 
 	public static void main(String[] args) {
-		
+
 		Scanner sc = new Scanner(System.in);
-		List<Funcionario> funcionarios = new ArrayList<>();
-		
+		List<Funcionario> funcionariosList = new ArrayList<>();
+
+		/*
+		 * System.out.println("Teste ->"); String teste1 = sc.nextLine();
+		 */
+		FuncoesDatas FunctionsDate = new FuncoesDatas();
+		/*
+		 * LocalDate testeFmt = testeDate.dateToString(teste1);
+		 * System.out.println(testeFmt);
+		 */
+
 		try {
-			
+
 			int numFuncionarios;
 			System.out.print("- Quantos funcionários voce deseja inserir? ");
 			numFuncionarios = sc.nextInt();
-			
-			for(int i = 0; i < numFuncionarios; i++) {
-				
+
+			sc.nextLine();
+
+			for (int i = 0; i < numFuncionarios; i++) {
+
+				Funcionario funcionarios = new Funcionario();
+
 				System.out.print("- Nome: ");
-				String nome = sc.nextLine();
-				
+				funcionarios.setNome(sc.nextLine());
+
+				System.out.print("- Idade: ");
+				funcionarios.setIdade(sc.nextInt());
+				sc.nextLine();
+
 				System.out.print("- Tipo do contrato (EFETIVO, TEMPORARIO, ESTAGIARIO): ");
 				String tipoContrato = sc.nextLine();
-				
+				funcionarios.setTipoContrato(TipoContrato.valueOf(tipoContrato));
+
 				System.out.print("- Salário base: ");
-				double salario = sc.nextDouble();
-				
+				funcionarios.setSalario(sc.nextDouble());
+
 				sc.nextLine();
-				
-				System.out.print("Qual o cargo do funcionario? ");
+
+				System.out.print("- Data da contratação (DD/MM/YYYY): ");
+				String data = sc.nextLine();
+				funcionarios.setDataContratacao(data);
+
+				System.out.print("- Qual o cargo do funcionario? ");
 				String cargo = sc.nextLine();
-				
-				if(cargo == "Gerente" || cargo == "GERENTE" || cargo == "gerente") {
+
+				if (cargo.equals("Gerente") || cargo.equals("GERENTE") || cargo.equals("gerente")) {
+
 					System.out.print("Bônus: ");
 					double bonus = sc.nextDouble();
-				} 
-				//parei aqui, falta a data de contrato, com isso formatar a data no método.
-				sc.nextLine();
-				
-				
-				
+
+					Gerente funcionarioGerente = new Gerente(funcionarios.getNome(), funcionarios.getIdade(),
+							funcionarios.getSalario(), funcionarios.getDataContratacao() ,
+							funcionarios.getTipoContrato(), bonus);
+					
+					funcionariosList.add(funcionarioGerente);
+				} else {
+					funcionariosList.add(funcionarios);
+				}
+
 			}
-			
+
+			for (Funcionario x : funcionariosList) {
+				System.out.println(x);
+			}
+
 		} catch (SalarioInvalidoException e) {
 			System.out.println(e.getMessage());
+		} catch (DataInvalidaException e) {
+			System.out.println(e.getMessage());
 		}
+		/*Parei por aqui, proximo passo é:
+			- Metodo de formatada date para string
+			- Melhorar a saída
+			- Trocar . por , na saida do double
+			- Tratar todas as exceções
+		*/
 
 	}
 
