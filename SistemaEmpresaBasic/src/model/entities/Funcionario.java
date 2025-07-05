@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import model.enums.TipoContrato;
 import model.excecoes.DataInvalidaException;
@@ -66,7 +67,6 @@ public class Funcionario extends FuncoesDatas{
 	}
 
 	public void setDataContratacao(String dataContratacao) throws DataInvalidaException{
-		//criar um metodo que formate a data em um pacote utils
 		LocalDate dateFormated = stringToDate(dataContratacao);
 		
 		LocalDate now = LocalDate.now();

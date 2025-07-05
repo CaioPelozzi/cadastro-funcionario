@@ -1,6 +1,8 @@
 package application;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,7 +17,7 @@ public class Program {
 
 	public static void main(String[] args) {
 
-		Scanner sc = new Scanner(System.in);
+		
 		List<Funcionario> funcionariosList = new ArrayList<>();
 
 		/*
@@ -27,7 +29,7 @@ public class Program {
 		 * System.out.println(testeFmt);
 		 */
 
-		try {
+		try (Scanner sc = new Scanner(System.in);) {
 
 			int numFuncionarios;
 			System.out.print("- Quantos funcionários voce deseja inserir? ");
@@ -85,13 +87,20 @@ public class Program {
 		} catch (SalarioInvalidoException e) {
 			System.out.println(e.getMessage());
 		} catch (DataInvalidaException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Data inválida, tente novamente!");
+		} catch (InputMismatchException e) {
+			System.out.println("Entrada não esperada, tente novamente!");
+		} catch (IllegalArgumentException e) {
+			System.out.println("Argumento não esperado, tente novamente!");
+		} catch (DateTimeParseException e) {
+			System.out.println("Data inválida, entre com o formato de data esperado!");
 		}
+		
+		
 		/*Parei por aqui, proximo passo é:
-			- Metodo de formatada date para string
-			- Melhorar a saída
-			- Trocar . por , na saida do double
-			- Tratar todas as exceções
+			- Metodo de formatada date para string [X]
+			- Melhorar a saída com string biulder []	
+			- Tratar todas as exceções [X]
 		*/
 
 	}
