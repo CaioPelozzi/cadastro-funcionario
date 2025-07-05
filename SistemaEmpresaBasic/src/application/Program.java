@@ -11,7 +11,6 @@ import model.entities.Gerente;
 import model.enums.TipoContrato;
 import model.excecoes.DataInvalidaException;
 import model.excecoes.SalarioInvalidoException;
-import model.utils.FuncoesDatas;
 
 public class Program {
 
@@ -19,15 +18,6 @@ public class Program {
 
 		
 		List<Funcionario> funcionariosList = new ArrayList<>();
-
-		/*
-		 * System.out.println("Teste ->"); String teste1 = sc.nextLine();
-		 */
-		FuncoesDatas FunctionsDate = new FuncoesDatas();
-		/*
-		 * LocalDate testeFmt = testeDate.dateToString(teste1);
-		 * System.out.println(testeFmt);
-		 */
 
 		try (Scanner sc = new Scanner(System.in);) {
 
@@ -39,45 +29,49 @@ public class Program {
 
 			for (int i = 0; i < numFuncionarios; i++) {
 
-				Funcionario funcionarios = new Funcionario();
+				
 
 				System.out.print("- Nome: ");
-				funcionarios.setNome(sc.nextLine());
+				String nome = sc.nextLine();
 
 				System.out.print("- Idade: ");
-				funcionarios.setIdade(sc.nextInt());
+				int idade = sc.nextInt();
+				
 				sc.nextLine();
 
 				System.out.print("- Tipo do contrato (EFETIVO, TEMPORARIO, ESTAGIARIO): ");
 				String tipoContrato = sc.nextLine();
-				funcionarios.setTipoContrato(TipoContrato.valueOf(tipoContrato));
+				
 
 				System.out.print("- Salário base: ");
-				funcionarios.setSalario(sc.nextDouble());
+				double salario = sc.nextDouble();
+				
 
 				sc.nextLine();
 
 				System.out.print("- Data da contratação (DD/MM/YYYY): ");
 				String data = sc.nextLine();
-				funcionarios.setDataContratacao(data);
+				
 
 				System.out.print("- Qual o cargo do funcionario? ");
 				String cargo = sc.nextLine();
+				
+				
 
 				if (cargo.equals("Gerente") || cargo.equals("GERENTE") || cargo.equals("gerente")) {
 
-					System.out.print("Bônus: ");
+					System.out.print("- Bônus: ");
 					double bonus = sc.nextDouble();
-
-					Gerente funcionarioGerente = new Gerente(funcionarios.getNome(), funcionarios.getIdade(),
-							funcionarios.getSalario(), funcionarios.getDataContratacao() ,
-							funcionarios.getTipoContrato(), bonus);
+					
+					
+					Gerente funcionarioGerente = new Gerente(nome, idade, salario, data, TipoContrato.valueOf(tipoContrato), cargo, bonus);
 					
 					funcionariosList.add(funcionarioGerente);
 				} else {
+					Funcionario funcionarios = new Funcionario(nome, idade, salario, data, TipoContrato.valueOf(tipoContrato), cargo);
 					funcionariosList.add(funcionarios);
 				}
-
+				System.out.println();
 			}
 
 			for (Funcionario x : funcionariosList) {
@@ -89,20 +83,12 @@ public class Program {
 		} catch (DataInvalidaException e) {
 			System.out.println("Data inválida, tente novamente!");
 		} catch (InputMismatchException e) {
-			System.out.println("Entrada não esperada, tente novamente!");
+			System.out.println("Por favor, insira um número!");
 		} catch (IllegalArgumentException e) {
-			System.out.println("Argumento não esperado, tente novamente!");
+			System.out.println("Por favor, insira seguindo as regras!");
 		} catch (DateTimeParseException e) {
 			System.out.println("Data inválida, entre com o formato de data esperado!");
 		}
-		
-		
-		/*Parei por aqui, proximo passo é:
-			- Metodo de formatada date para string [X]
-			- Melhorar a saída com string biulder []	
-			- Tratar todas as exceções [X]
-		*/
-
 	}
 
 }

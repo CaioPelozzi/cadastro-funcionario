@@ -1,7 +1,6 @@
 package model.entities;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 import model.enums.TipoContrato;
 import model.excecoes.DataInvalidaException;
@@ -15,21 +14,32 @@ public class Funcionario extends FuncoesDatas{
 	private double salario;
 	private LocalDate dataContratacao;
 	private TipoContrato tipoContrato;
+	private String cargo;
 	
 	public Funcionario() {
 		
 	}
 
-	public Funcionario(Gerente gerente) {
+	public Funcionario(Gerente gerente){
 		
 	}
 	
-	public Funcionario(String nome, int idade, double salario, LocalDate dataContratacao, TipoContrato tipoContrato) {
+	public Funcionario(String nome, int idade, double salario, String dataContratacao, TipoContrato tipoContrato, String cargo) throws DataInvalidaException, SalarioInvalidoException{
 		this.nome = nome;
 		this.idade = idade;
 		this.salario = salario;
-		this.dataContratacao = dataContratacao;
+		LocalDate dataContrat = FuncoesDatas.stringToDate(dataContratacao);
+		this.dataContratacao = dataContrat;
 		this.tipoContrato = tipoContrato;
+		this.cargo = cargo;
+	}
+
+	public String getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
 	}
 
 	public String getNome() {
@@ -52,31 +62,14 @@ public class Funcionario extends FuncoesDatas{
 		return salario;
 	}
 
-	public void setSalario(double salario) throws SalarioInvalidoException{
-		if (salario > 20000.0){
-			throw new SalarioInvalidoException("Salário Inválido!");
-		} else if (salario < 1000) {
-			throw new SalarioInvalidoException("Salário Inválido!");
-		} else {
+	public void setSalario(double salario) {
 			this.salario = salario; 
-		} 
 	}
 
 	public LocalDate getDataContratacao() {
 		return dataContratacao;
 	}
-
-	public void setDataContratacao(String dataContratacao) throws DataInvalidaException{
-		LocalDate dateFormated = stringToDate(dataContratacao);
-		
-		LocalDate now = LocalDate.now();
-		if (!dateFormated.equals(now)) {
-			throw new DataInvalidaException("Data Inválida!"); 
-		} else {
-			this.dataContratacao = dateFormated;
-		}
-	}
-
+	
 	public TipoContrato getTipoContrato() {
 		return tipoContrato;
 	}
@@ -85,17 +78,15 @@ public class Funcionario extends FuncoesDatas{
 		this.tipoContrato = tipoContrato;
 	}
 	
-	public double calcularSalario() {
-		return this.getSalario();
-	}
-
 	@Override
 	public String toString() {
+		String dataFormatada = FuncoesDatas.dateToString(this.getDataContratacao());
 		return "Nome: " + this.getNome() +
 				"\nIdade: " + this.getIdade() + 
 				"\nSalario: " + this.getSalario() +
-				"\nData contratação: " + this.getDataContratacao() +
-				"\nTipo do contrato: " + this.getTipoContrato();
+				"\nCargo: " + this.getCargo() +
+				"\nData contratação: " + dataFormatada +
+				"\nTipo do contrato: " + this.getTipoContrato() + "\n";
 	}
 	
 	
